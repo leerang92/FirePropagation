@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "FireCell.h"
+#include "ActorFireCell.h"
 #include "FirePropagationComponent.generated.h"
 
 
@@ -25,13 +25,43 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UFUNCTION(BlueprintCallable, Category = "Fire")
-	void CreateCell();
-		
-	bool IsCell : 1;
+	UPROPERTY(BlueprintReadWrite, Category = "Cell")
+	bool IsCell;
+
+	UPROPERTY(EditAnywhere, Category = "Cell")
+	TSubclassOf<class AActor> CellActor;
 
 	UFUNCTION(BlueprintCallable, Category = "Fire")
 	FORCEINLINE bool GetIsCell() const { return IsCell; }
 
+	UPROPERTY(EditAnywhere, Category = "Cell")
+	float Row;
+	
+	UPROPERTY(EditAnywhere, Category = "Cell")
+	float Coloume;
 
+	UPROPERTY(EditAnywhere, Category = "Cell")
+	float Floor;
+
+	UPROPERTY(EditAnywhere, Category = "Cell")
+	float CellSize;
+
+	TArray<int32> Direct;
+
+	TArray<int32> CellIndex;
+
+	FTimerHandle CellTimer;
+
+	void SetupCell(FVector CellLoc);
+
+	void SearchCell();
+
+	int GetNextCellIndex(int Index);
+
+	void ActiveCell();
+
+private:
+	void CreateCell();
+
+	TArray<class AActorFireCell*> CellArr;
 };

@@ -17,13 +17,7 @@ public:
 	// Sets default values for this actor's properties
 	AFireGrid();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	void CreateCell(FVector HitPoint);
 	
@@ -33,6 +27,7 @@ public:
 	UPROPERTY()
 	TArray<class AFireCell*> FireCells;
 
+	// 방향 배열
 	TArray<int32> Direct;
 
 	TArray<int32> CellIndex;
@@ -55,7 +50,4 @@ private:
 	FTimerHandle CellTimer;
 
 	void ActiveCell();
-
-	void DestroyCell();
-
 };

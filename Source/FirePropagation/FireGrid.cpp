@@ -26,20 +26,6 @@ AFireGrid::AFireGrid()
 
 }
 
-// Called when the game starts or when spawned
-void AFireGrid::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-// Called every frame
-void AFireGrid::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
 void AFireGrid::CreateCell(FVector HitPoint)
 {
 	const FVector ActorLoc = GetActorLocation();
@@ -125,10 +111,3 @@ void AFireGrid::ActiveCell()
 	GetWorld()->GetTimerManager().ClearTimer(CellTimer);
 	SearchCell();
 }
-
-void AFireGrid::DestroyCell()
-{
-
-	
-}
-

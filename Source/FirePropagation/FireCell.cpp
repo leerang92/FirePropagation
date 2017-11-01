@@ -5,10 +5,11 @@
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 
+
+
 // Sets default values
 AFireCell::AFireCell()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	HP = 100.0f;
@@ -19,12 +20,6 @@ AFireCell::AFireCell()
 	RootComponent = BoxCol;
 }
 
-// Called when the game starts or when spawned
-void AFireCell::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
 // Called every frame
 void AFireCell::Tick(float DeltaTime)
 {
@@ -33,9 +28,9 @@ void AFireCell::Tick(float DeltaTime)
 	if (IsFire)
 	{
 		HP -= DeltaTime * Slop;
-		if (HP <= 0.0f && FireComp != nullptr)
+		if (HP <= 0.0f && FireFXComp != nullptr)
 		{
-			FireComp->DeactivateSystem();
+			FireFXComp->DeactivateSystem();
 			IsFire = false;
 			SetLifeSpan(0.1f);
 		}
@@ -58,9 +53,22 @@ void AFireCell::SetupCell()
 	if (!IsFire)
 	{
 		IsFire = true;
-		this->BoxCol->SetHiddenInGame(false);
-		FireComp = PlayParticle(FireFX);
+		
+		FireFXComp = PlayParticle(FireFX);
+
+		if (FireActor != NULL)
+		{
+			UE_LOG(LogClass, Warning, TEXT("Fire Box"));
+			FireActor->FireProComp->SetupCell(GetActorLocation());
+		}
 	}
+}
+
+void AFireCell::SetFireComponent(AActor * NewClass)
+{
+	this->BoxCol->SetHiddenInGame(false);
+	
+	//FireActor = NewClass;
 }
 
 void AFireCell::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
